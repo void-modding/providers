@@ -4,4 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-lib-vmm = { git = "https://github.com/void-mod-manager/lib-vmm" }
+async-trait = "0.1.89"
+lib-vmm = { git = "https://github.com/void-mod-manager/lib-vmm", branch = "main" }
+reqwest = { version = "0.12.24", features=["json"]}
+serde = "1.0.228"
+serde_json = "1.0.145"
