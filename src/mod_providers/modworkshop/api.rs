@@ -49,7 +49,7 @@ impl ModWorkShopProvider {
 
 #[async_trait::async_trait]
 impl ModProvider for ModWorkShopProvider {
-async fn discover(&self, query: &DiscoveryQuery) -> Result<DiscoveryResult, DiscoveryError> {
+    async fn discover(&self, query: &DiscoveryQuery) -> Result<DiscoveryResult, DiscoveryError> {
         let target = self.build_url(&query)?;
         let resp: DiscoverResponse = self
             .http
