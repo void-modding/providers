@@ -15,10 +15,10 @@ pub fn register_all_providers(ctx_builder: &mut ContextBuilder, api: Arc<dyn Pro
     // All of this is bad, we shouldn't do this, especially passing context directly to plugins
     // but since this is a "trusted" plugin, and we don't have a better way of loading plugins yet, it'll have to do
     ctx_builder
-        .register_game_provider(payday2_game_provider, ProviderSource::Core)
-        .expect("Failed to register PAYDAY 2 game provider");
-
-    ctx_builder
         .register_mod_provider(&modworkshop_provider.register(), modworkshop_provider, ProviderSource::Core)
         .expect("Failed to register Modworkshop mod provider");
+
+    ctx_builder
+        .register_game_provider(payday2_game_provider, ProviderSource::Core)
+        .expect("Failed to register PAYDAY 2 game provider");
 }
