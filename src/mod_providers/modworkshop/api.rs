@@ -1,6 +1,8 @@
 use std::sync::Arc;
 use lib_vmm::{api::ProviderApi, net::{HttpError, ProviderHttpClient, ProviderHttpClientTypedExt, ReqwestProviderHttpClient}, traits::{discovery::{DiscoveryError, DiscoveryMeta, DiscoveryQuery, DiscoveryResult, ModExtendedMetadata, ModSummary, PaginationMeta}, mod_provider::{ModDownloadResult, ModProvider, ModProviderFeatures}}};
 use reqwest::Url;
+use crate::mod_providers::modworkshop;
+
 use super::types::{DiscoverResponse, ExtendedResponse};
 
 pub struct ModWorkShopProvider {
