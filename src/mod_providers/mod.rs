@@ -1,2 +1,3 @@
 pub(crate) mod modworkshop;
-pub(crate) mod nexus;
+
+pub(crate) use modworkshop::api::ModWorkShopProvider;
