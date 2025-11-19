@@ -753,7 +753,7 @@ dependencies = [
 [[package]]
 name = "lib-vmm"
 version = "0.1.0"
-source = "git+https://github.com/void-mod-manager/lib-vmm?branch=main#a22636449a0dab2321920bb3aca2d484b2644bc7"
+source = "git+https://github.com/void-modding/lib-vmm?branch=main#a22636449a0dab2321920bb3aca2d484b2644bc7"
 dependencies = [
  "async-trait",
  "reqwest",
