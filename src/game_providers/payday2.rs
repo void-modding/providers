@@ -1,7 +1,7 @@
 use std::{fs, io::{Error, ErrorKind}, path::{Path, PathBuf}};
 
 use async_trait::async_trait;
-use lib_vmm::{archive::{ArchiveInfo, determine_root_dir, ensure_dir, extract_zip, inspect_zip, replace_symlink_dir}, registry::ProviderSource, traits::game_provider::{GameIcon, GameInstallError, GameMetadata, GameProvider}};
+use lib_vmm::{archive::{ArchiveInfo, determine_root_dir, ensure_dir, extract_zip, inspect_zip, replace_symlink_dir}, registry::ProviderSource, traits::{game_provider::{GameIcon, GameInstallError, GameMetadata, GameProvider}, provider::Provider}};
 
 use crate::helper::staging::StagingGuard;
 
@@ -50,14 +50,19 @@ impl Payday2Provider {
     }
 }
 
+impl Provider for Payday2Provider {
+    fn id(&self) -> &'static str { "core:payday_2" }
+
+    fn capabilities(&self) -> &[lib_vmm::capabilities::base::CapabilityRef] { &[] }
+}
+
 #[async_trait]
 impl GameProvider for Payday2Provider {
-    fn game_id(&self) -> &str { "core:payday_2" }
     fn mod_provider_id(&self) -> &str { "core:modworkshop" }
 
     fn metadata(&self) -> GameMetadata {
         GameMetadata {
-            id: self.game_id().into(),
+            id: self.id().into(),
             display_name: "PAYDAY 2".into(),
             short_name: "PD2".into(),
             icon: GameIcon::Path("https://cdn2.steamgriddb.com/icon/fa6d3cc166fbfbf005c9e77d96cba283/32/256x256.png".into()),
@@ -67,7 +72,7 @@ impl GameProvider for Payday2Provider {
 
     /// Game ID for modworkshop query
     fn get_external_id(&self) -> &str { "1" }
-    fn install_mod(&self, target: &PathBuf) -> Result<(), GameInstallError> {
+    fn install_mod(&self, target: &Path) -> Result<(), GameInstallError> {
         // Game
         let game_install_path = self.resolve_install_path().ok_or(GameInstallError::MissingGameFiles)?;
 
@@ -92,7 +97,7 @@ impl GameProvider for Payday2Provider {
             .join("me.ghoul.void_mod_manager")
             .join("mods")
             .join("extracted")
-            .join(self.game_id())
+            .join(self.id())
             .join(&raw_name_os);
 
         let staging = extracted_root.with_extension("staging");

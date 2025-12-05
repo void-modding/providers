@@ -752,8 +752,9 @@ dependencies = [
 
 [[package]]
 name = "lib-vmm"
-version = "0.1.0"
-source = "git+https://github.com/void-modding/lib-vmm?branch=main#a22636449a0dab2321920bb3aca2d484b2644bc7"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3000ed069208c06172437481f7eab474ff7e94085c7d6e1f11b9281ee55ad6e3"
 dependencies = [
  "async-trait",
  "reqwest",

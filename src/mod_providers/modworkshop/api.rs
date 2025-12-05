@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use lib_vmm::{api::ProviderApi, net::{HttpError, ProviderHttpClient, ProviderHttpClientTypedExt, ReqwestProviderHttpClient}, traits::{discovery::{DiscoveryError, DiscoveryMeta, DiscoveryQuery, DiscoveryResult, ModExtendedMetadata, ModSummary, PaginationMeta}, mod_provider::{ModDownloadResult, ModProvider, ModProviderFeatures}}};
+use lib_vmm::{api::ProviderApi, net::{HttpError, ProviderHttpClient, ProviderHttpClientTypedExt, ReqwestProviderHttpClient}, traits::{discovery::{DiscoveryError, DiscoveryMeta, DiscoveryQuery, DiscoveryResult, ModExtendedMetadata, ModSummary, PaginationMeta}, mod_provider::{ModDownloadResult, ModProvider}, provider::Provider}};
 use reqwest::Url;
 use super::types::{DiscoverResponse, ExtendedResponse};
 
@@ -47,9 +47,15 @@ impl ModWorkShopProvider {
 
 }
 
+impl Provider for ModWorkShopProvider {
+    fn id(&self) -> &'static str { "core:modworkshop" }
+
+    fn capabilities(&self) -> &[lib_vmm::capabilities::base::CapabilityRef] { &[] }
+}
+
 #[async_trait::async_trait]
 impl ModProvider for ModWorkShopProvider {
-async fn discover(&self, query: &DiscoveryQuery) -> Result<DiscoveryResult, DiscoveryError> {
+    async fn discover(&self, query: &DiscoveryQuery) -> Result<DiscoveryResult, DiscoveryError> {
         let target = self.build_url(query)?;
         let resp: DiscoverResponse = self
             .http
@@ -135,7 +141,7 @@ async fn discover(&self, query: &DiscoveryQuery) -> Result<DiscoveryResult, Disc
         })
     }
 
- async fn download_mod(&self, _mod_id: String) -> ModDownloadResult {
+    async fn download_mod(&self, _mod_id: String) -> ModDownloadResult {
         // TODO: make this use mod_id
         //     -> This would require us make an API to convert the numeric mod_id into a download link (like how extended_metadata works)
         let target = String::from("https://storage.modworkshop.net/mods/files/53461_71246_ERjHBd1mwDsnSW70RlJ2meqkucPO3JtAsXfpyDU5.zip?filename=Rich%20Presence%20Musical.zip");
@@ -196,13 +202,4 @@ async fn discover(&self, query: &DiscoveryQuery) -> Result<DiscoveryResult, Disc
             description: parsed.description.unwrap_or_default()
         }
     }
-
-    fn configure(&self) -> &ModProviderFeatures {
-        todo!("configure");
-    }
-
-    fn register(&self) -> String {
-        "core:modworkshop".into()
-    }
-
 }
